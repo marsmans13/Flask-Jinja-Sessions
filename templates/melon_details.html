@@ -14,7 +14,9 @@
             <div class="well">
                 <h3>Price per melon</h3>
                 <p> {{ display_melon.price_str() }} </p>
+                <form action="/add_to_cart" name="add_melon" value="display_melon.melon_id">
                 <a class="btn btn-primary" href="/add_to_cart/{{ display_melon.melon_id }}">
+                </form>
                     Add to Cart
                 </a>
             </div>
