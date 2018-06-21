@@ -75,18 +75,21 @@ def show_shopping_cart():
     #
     # Make sure your function can also handle the case wherein no cart has
     # been added to the session
-    melon_list = []
+
+    melon_dict = {}
     melon_price = []
-    print(session['cart'])
+    total_cost = 0
 
-    for m_id in session['cart']:
-        print("id: " + m_id)
-        melon_list.append(melons.get_by_id(m_id))
-        melon_price.append(session['cart'][m_id] * float(melons.get_by_id(m_id).price))
+    if 'cart' not in session:
+        flash("Your cart is empty.")
+    else:
+        for m_id in session['cart']:
+            melon_dict[melons.get_by_id(m_id)] = session['cart'][m_id]
+            melon_price.append(session['cart'][m_id] * float(melons.get_by_id(m_id).price))
 
-    total_cost = sum(melon_price)
+        total_cost = sum(melon_price)
 
-    return render_template("cart.html", melons=melons.melon_types, melon_list=melon_list, total_cost=total_cost)
+    return render_template("cart.html", melons=melons.melon_types, melon_dict=melon_dict, total_cost=total_cost)
 
 @app.route("/add_to_cart/<melon_id>")
 def add_to_cart(melon_id):
@@ -110,11 +113,9 @@ def add_to_cart(melon_id):
     if 'cart' not in session:
         session['cart'] = {}
 
-    print(session['cart'])
-
     session['cart'][melon_id] = session['cart'].get(melon_id, 0) + 1
 
-    print(session['cart'])
+    flash("{} was successfully added to your cart.".format(melons.melon_types[melon_id].common_name))
 
     return redirect("/cart")
 

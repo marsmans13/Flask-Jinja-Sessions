@@ -13,14 +13,18 @@
         </tr>
         </thead>
         <tbody>
-        {% for melon_id in session['cart'] %}
-        <tr>
-            <td> {{ melons[melon_id].common_name }} </td>
-            <td> {{ session['cart'][melon_id] }} </td>
-            <td> ${{ melons[melon_id].price }} </td>
-            <td> ${{ melons[melon_id].price * session['cart'][melon_id] }} </td>
-        </tr>
-        {% endfor %}
+        {% if melon_dict == False %}
+
+        {% else %}
+            {% for melon_obj in melon_dict %}
+            <tr>
+                <td> {{ melon_obj.common_name }} </td>
+                <td> {{ melon_dict[melon_obj] }} </td>
+                <td> ${{ melon_obj.price }} </td>
+                <td> ${{ melon_obj.price * melon_dict[melon_obj] }} </td>
+            </tr>
+            {% endfor %}
+        {% endif %}
 
         </tbody>
     </table>
